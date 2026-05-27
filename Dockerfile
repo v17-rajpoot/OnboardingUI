@@ -1,4 +1,4 @@
-# =========================
+﻿# =========================
 # Stage 1: Build React App
 # =========================
 FROM node:18-alpine AS build
@@ -14,7 +14,7 @@ RUN npm ci
 # Copy source code
 COPY . .
 
-# Build production app (Vite ? dist)
+# Build production app (Vite → dist)
 RUN npm run build
 
 
