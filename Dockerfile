@@ -1,20 +1,27 @@
-# Build stage: use Node.js to build the React app
+# Build stage
 FROM node:18 AS build
+
 WORKDIR /app
 
+# Copy package files
+COPY package*.json ./
+
 # Install dependencies
-COPY package.json package-lock.json ./
 RUN npm install
 
-# Copy the rest of the source code and build the app
-COPY . ./
+# Copy source code
+COPY . .
+
+# Create production build
 RUN npm run build
 
-# Production stage: use nginx to serve the built app
+# Production stage
 FROM nginx:alpine
-COPY --from=build /app/build /usr/share/nginx/html
 
-# Expose port 80
+# Copy Vite build output
+COPY --from=build /app/dist /usr/share/nginx/html
+
+# Expose nginx port
 EXPOSE 80
 
 # Start nginx
